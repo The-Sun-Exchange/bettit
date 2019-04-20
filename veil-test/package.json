@@ -1,0 +1,29 @@
+{
+  "name": "veil-test",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc",
+    "sign": "npm run tsc && node ./dist/index.js"
+  },
+  "dependencies": {
+    "@0x/order-utils": "^7.0.0",
+    "@0x/subproviders": "^4.0.0",
+    "@0x/utils": "^4.2.0",
+    "@0x/web3-wrapper": "^6.0.0",
+    "ethereum-types": "^2.1.0",
+    "ethers": "^4.0.27",
+    "node-fetch": "^2.2.0",
+    "veil-js": "^1.0.6",
+    "web3": "^1.0.0-beta.52"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.117",
+    "@types/node": "^10.9.4",
+    "@types/node-fetch": "^2.1.2",
+    "@types/web3": "^1.0.3",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.4.4"
+  }
+}
