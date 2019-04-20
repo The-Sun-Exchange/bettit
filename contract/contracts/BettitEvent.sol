@@ -1,0 +1,152 @@
+pragma solidity ^0.5.1;
+
+contract BettitEvent {
+    uint256 _bettingClosingTime;
+    string[] _allowedOutcomes;
+
+    uint256 _outcomePercentageThreshold = 80;
+    uint256 _minimumOutcomeReports = 10;
+
+    struct Bet {
+        address payable senderAddress;
+        string predictedOutcome;
+        uint256 amount;
+    }
+
+    Bet[] _bets;
+    mapping (address => string) _reportedOutcomes;
+    uint256 _reportedOutcome1Count = 0;
+    uint256 _reportedOutcome2Count = 0;
+    uint256 _reportedOutcomeDrawCount = 0;
+
+    constructor(uint256 bettingClosingTime, string memory allowedOutcome1, string memory allowedOutcome2) public {
+        _bettingClosingTime = bettingClosingTime;
+        _allowedOutcomes = ['draw', allowedOutcome1, allowedOutcome2];
+    }
+
+    function areStringsEqual(string memory string1, string memory string2) pure internal returns(bool) {
+        if (keccak256(bytes(string1)) == keccak256(bytes(string2))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function isAllowedOutcome(string memory outcome) internal view returns(bool) {
+        for (uint256 i = 0; i < _allowedOutcomes.length; i++) {
+            string memory allowedOutcome = _allowedOutcomes[i];
+
+            if (areStringsEqual(allowedOutcome, outcome)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function bet(string memory outcome) payable public returns(bool) {
+        require (now < _bettingClosingTime, "This betting round has closed.");
+        require (isAllowedOutcome(outcome), "Invalid outcome provided.");
+
+        _bets.push(Bet({senderAddress: msg.sender, predictedOutcome: outcome, amount: msg.value}));
+        return true;
+    }
+
+    function sufficientOutcomesReported() internal view returns(bool) {
+        if (totalOutcomeReports() >= _minimumOutcomeReports) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function payoutForOutcome(uint256 amountToPayPerUnitBetted, string memory outcome) internal {
+        for (uint256 i = 0; i < _bets.length; i++) {
+            if (areStringsEqual(_bets[i].predictedOutcome, outcome)) {
+                _bets[i].senderAddress.transfer(amountToPayPerUnitBetted * _bets[i].amount);
+            }
+        }
+    }
+
+    function outcomePercentageThresholdReached() internal view returns (bool) {
+        return ((_reportedOutcome1Count / totalOutcomeReports() * 100 > _outcomePercentageThreshold) ||
+        (_reportedOutcome2Count / totalOutcomeReports() * 100 > _outcomePercentageThreshold) ||
+        (_reportedOutcomeDrawCount / totalOutcomeReports() * 100 > _outcomePercentageThreshold));
+    }
+
+    function attemptPayout() internal returns(bool) {
+        uint256 totalAmountBettedForOutcome1 = 0;
+        uint256 totalAmountBettedForOutcome2 = 0;
+        uint256 totalAmountBettedForOutcomeDraw = 0;
+        uint256 totalReportedForOutcome1 = 0;
+        uint256 totalReportedForOutcome2 = 0;
+        uint256 totalReportedForOutcomeDraw = 0;
+
+        totalReportedForOutcomeDraw++;
+        totalReportedForOutcome1++;
+        totalReportedForOutcome2++;
+
+        for (uint256 i = 0; i < _bets.length; i++) {
+            if (areStringsEqual(_bets[i].predictedOutcome, _allowedOutcomes[0])) {
+                totalAmountBettedForOutcomeDraw += _bets[i].amount;
+            }
+
+            else if (areStringsEqual(_bets[i].predictedOutcome, _allowedOutcomes[1])) {
+                totalAmountBettedForOutcome1 += _bets[i].amount;
+            }
+
+            else {
+                totalAmountBettedForOutcome2 += _bets[i].amount;
+            }
+        }
+
+        uint256 totalInPot = totalAmountBettedForOutcome1 + totalAmountBettedForOutcome2 + totalAmountBettedForOutcomeDraw;
+        uint256 totalBettedForWinningOutcome = 0;
+        string memory winningOutcome = '';
+
+        if ((totalReportedForOutcome1 > totalReportedForOutcome2) &&  (totalReportedForOutcome1 > totalReportedForOutcomeDraw)) {
+            totalBettedForWinningOutcome = totalAmountBettedForOutcome1;
+            winningOutcome = _allowedOutcomes[1];
+        }
+        else if ((totalReportedForOutcome2 > totalReportedForOutcome1) &&  (totalReportedForOutcome2 > totalReportedForOutcomeDraw)) {
+            totalBettedForWinningOutcome = totalAmountBettedForOutcome2;
+            winningOutcome = _allowedOutcomes[2];
+        }
+        else {
+            totalBettedForWinningOutcome = totalAmountBettedForOutcomeDraw;
+            winningOutcome = _allowedOutcomes[0];
+        }
+
+        if (outcomePercentageThresholdReached() && sufficientOutcomesReported()) {
+            uint256 amountToPayPerUnitBetted = totalInPot / totalBettedForWinningOutcome; // weighted distribution to winners
+            payoutForOutcome(amountToPayPerUnitBetted, winningOutcome);
+        }
+    }
+
+    function totalOutcomeReports() internal view returns (uint256) {
+        return _reportedOutcome1Count + _reportedOutcome2Count + _reportedOutcomeDrawCount;
+    }
+
+    function reportOutcome(string memory outcome) public returns(bool) {
+        require (now > _bettingClosingTime, "This betting round is still in progress.");
+        require (isAllowedOutcome(outcome), "Invalid outcome provided.");
+
+        if (bytes(_reportedOutcomes[msg.sender]).length == 0) {
+            _reportedOutcomes[msg.sender] = outcome;
+
+            if (areStringsEqual(_allowedOutcomes[0], outcome)) {
+                _reportedOutcomeDrawCount++;
+            } else if (areStringsEqual(_allowedOutcomes[1], outcome)) {
+                _reportedOutcome1Count++;
+            } else {
+                _reportedOutcome2Count++;
+            }
+
+            attemptPayout();
+
+            return true;
+        }
+
+        return false;
+    }
+}
