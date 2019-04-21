@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="score.js" async></script>
     <script src="./node_modules/ethjs-query/dist/ethjs-query.js" async></script>
     <script
@@ -8,8 +9,8 @@
       async
     ></script>
   </head>
-  <body onload="score();">
-    <h1>Report on the event outcome</h1>
+  <body onload="score();" style="background-color:#000000;">
+    <h1 class="NEONbluetxt">Report on the event outcome</h1>
     <p id="score_result"></p>
     <b color="red"><p id="error"></p></b>
   </body>
