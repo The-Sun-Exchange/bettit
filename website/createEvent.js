@@ -13,9 +13,15 @@ function postAddressMessageToReddit(address) {
   });
 
   const currentRedditCommentName = getCurrentRedditCommentName();
-  console.log("currentRedditCommentName: ", currentRedditCommentName);
   let submission = client.getComment(currentRedditCommentName);
   let replyMsg = "Betting Contract Address: " + address;
+
+  let url = "http://localhost:8000/bet?bettitEventInstanceAddress=" + address + "&outcome=A&account=0";
+  replyMsg += `\n\nTo bet on Team A click [${url}](${url}) and authorize the bet in MetaMask.`;
+
+  url = "http://localhost:8000/bet?bettitEventInstanceAddress=" + address + "&outcome=B&account=0";
+  replyMsg += `\n\nTo bet on Team B click [${url}](${url}) and authorize the bet in MetaMask.`;
+
   let result = submission.reply(replyMsg).then(result => console.log(result));
 }
 
