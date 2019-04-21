@@ -12,6 +12,7 @@
     "ethjs-contract": "^0.2.3",
     "ethjs-filter": "^0.1.8",
     "ethjs-query": "^0.3.8",
+    "express": "^4.16.4",
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "net": "^1.0.2"

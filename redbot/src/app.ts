@@ -40,7 +40,7 @@ class BettitBot{
         let submission = client.getComment(currentCommentName);
 
         let replyMsg =
-          "Please go to http://localhost:8000?submissionName="
+          "Please go to http://localhost:8000?currentCommentName="
           + currentCommentName
           + " and press the create event button after which punters can place their bets here" ;
         let result = submission.reply(replyMsg).then(
@@ -77,7 +77,7 @@ class BettitBot{
           let submission = client.getComment(currentCommentName);
 
           let replyMsg =
-            "Please go to http://localhost:8000/bet?bettitEventInstanceAddress="+ currentBettingContractAddress+" &outcome="
+            "Please go to http://localhost:8000/score?bettitEventInstanceAddress="+ currentBettingContractAddress+" &outcome="
             + bet
             + " and press the bet button after which punters can place their bets here" ;
           let result = submission.reply(replyMsg).then(
