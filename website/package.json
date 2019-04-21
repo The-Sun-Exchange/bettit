@@ -1,0 +1,23 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ws.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethjs-contract": "^0.2.3",
+    "ethjs-filter": "^0.1.8",
+    "ethjs-query": "^0.3.8",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "net": "^1.0.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
+  }
+}
