@@ -5,8 +5,11 @@ const Web3 = require("web3");
 const rpcURL = "http://34.245.24.81:8545";
 const web3 = new Web3(rpcURL);
 /*
-fan plunge gasp media rare penalty cream vault lion alpha trumpet can
+  fan plunge gasp media rare penalty cream vault lion alpha trumpet can
 */
+
+var currentBettingContractAddress:string ;
+var currentCommentName:string;
 
 class BettitBot{
   public async start() {
@@ -20,43 +23,70 @@ class BettitBot{
     });
 
 
-    //const rpcURL = "http://127.0.0.1:8545";
-    const rpcURL = "http://34.245.24.81:8545";
 
-    // Options object is a Snoowrap Listing object, but with subreddit and pollTime options
-
-    const comments = new CommentStream(client, { subreddit: "testingground4bots", limit: 10, pollTime: 2500 });
-    comments.on("item", async (item ) => {
+    const letsBetComments = new CommentStream(client, { subreddit: "testingground4bots", limit: 10, pollTime: 2500 });
+    letsBetComments.on("item", async (item ) => {
       console.log(item.body);
 
       let lowercasebody = item.body.toLowerCase();
-      let index = lowercasebody.indexOf("lets have a wager!");
 
-      if (index >=0) {
+      let createBettingContractIndex = lowercasebody.indexOf("lets have a wager");
+      if (createBettingContractIndex >=0) {
         let submissionRawName = item.name;
-        let submissionName = submissionRawName.substr(3);
 
-        console.log({foundSubmissionName: {submissionName ,submissionRawName }});
+        currentCommentName = submissionRawName.substr(3);
+        console.log({foundSubmissionName: {currentCommentName,submissionRawName }});
 
-        let submission = client.getComment(submissionName);
+        let submission = client.getComment(currentCommentName);
 
-        console.log("Got it")
-
-        console.log({foundSubMission:
-                     submission});
-
-        let replyMsg = "place your bets! the address is " + eventContractAddress;
-
-        console.log({submission_link_id: item.name});
-        console.log({replyMsg});
-
-
+        let replyMsg =
+          "Please go to http://localhost:8000?currentCommentName="
+          + currentCommentName
+          + " and press the create event button after which punters can place their bets here" ;
         let result = submission.reply(replyMsg).then(
-        console.log );
-
+          console.log );
       }
-    });
 
+      let bettingContracCreatedtIndex = lowercasebody.indexOf("Betting Contract Address: ");
+      if (bettingContracCreatedtIndex >=0) {
+        currentBettingContractAddress = lowercasebody.substr(bettingContracCreatedtIndex+26,42  );
+        console.log({currentBettingContractAddress });
+      }
+
+
+      let betIndex = lowercasebody.indexOf("Betting on: ");
+      if (betIndex >=0) {
+        var bet = lowercasebody.substr(betIndex+ 12, 1  );
+
+        let submission = client.getComment(currentCommentName);
+
+        let replyMsg =
+          "Please go to http://localhost:8000/bet?bettitEventInstanceAddress="+ currentBettingContractAddress+" &outcome="
+          + bet
+          + " and press the bet button after which punters can place their bets here" ;
+        let result = submission.reply(replyMsg).then(
+          console.log );
+
+        let scoreIndex = lowercasebody.indexOf("Won!") - 2 ;
+
+        if (betIndex >=0) {
+          var outcome = lowercasebody.substr(scoreIndex,1);
+
+          console.log({outcome});
+
+          let submission = client.getComment(currentCommentName);
+
+          let replyMsg =
+            "Please go to http://localhost:8000/score?bettitEventInstanceAddress="+ currentBettingContractAddress+" &outcome="
+            + bet
+            + " and press the bet button after which punters can place their bets here" ;
+          let result = submission.reply(replyMsg).then(
+            console.log );
+        }
+
+
+      };
+    });
   };
 };
 
