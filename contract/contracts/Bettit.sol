@@ -3,7 +3,7 @@ import "./BettitEvent.sol";
 
 contract Bettit {
     int contractsCreated = 0;
-    BettitEvent[] bettitEventContracts;
+    BettitEvent[] public bettitEventContracts;
 
     constructor() public {
     }
