@@ -1,11 +1,12 @@
 pragma solidity ^0.5.1;
 
 contract BettitEvent {
+    uint256 _bettingAmount = 1000000000000000; // 0.001 ETH
     uint256 _bettingClosingTime;
     string[] _allowedOutcomes;
 
     uint256 _outcomePercentageThreshold = 80;
-    uint256 _minimumOutcomeReports = 10;
+    uint256 _minimumOutcomeReports = 10; // not used
 
     struct Bet {
         address payable senderAddress;
@@ -47,8 +48,9 @@ contract BettitEvent {
     function bet(string memory outcome) payable public returns(bool) {
         require (now < _bettingClosingTime, "This betting round has closed.");
         require (isAllowedOutcome(outcome), "Invalid outcome provided.");
+        require (msg.value == _bettingAmount, "Invalid amount sent. Betting amount is 0.001");
 
-        _bets.push(Bet({senderAddress: msg.sender, predictedOutcome: outcome, amount: msg.value}));
+        _bets.push(Bet({senderAddress: msg.sender, predictedOutcome: outcome, amount: _bettingAmount}));
         return true;
     }
 
