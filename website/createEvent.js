@@ -4,7 +4,7 @@ function getCurrentRedditCommentName() {
 }
 
 function postAddressMessageToReddit (address) {
-  const client = new Snoowrap({
+  const client = new snoowrap({
     userAgent: "bettit",
     clientId: "jhJJvbKbFI6rEg",
     clientSecret: "kHJZeIKWbNn1VGWOADX89rhOErU",
@@ -13,6 +13,7 @@ function postAddressMessageToReddit (address) {
   });
 
   const currentRedditCommentName = getCurrentRedditCommentName();
+  console.log('currentRedditCommentName: ', currentRedditCommentName);
   let submission = client.getComment(currentRedditCommentName);
   let replyMsg = "Betting Contract Address: " + address;
   let result = submission.reply(replyMsg).then((result) => console.log(result));
