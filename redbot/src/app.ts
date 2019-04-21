@@ -42,7 +42,7 @@ class BettitBot{
 
         const url = "http://localhost:8000?currentCommentName=" + currentCommentName;
         let replyMsg =
-          `Please go to <a href="${url}">${url}</a> and confirm your transaction in MetaMask after which punters can place their bets here.`;
+              `Please go to [${url}](${url}) and confirm your transaction in MetaMask after which punters can place their bets here.`;
         let result = submission.reply(replyMsg).then(console.log);
       }
 
@@ -60,7 +60,7 @@ class BettitBot{
         let submission = client.getComment(currentCommentName);
 
         const url = "http://localhost:8000/bet?bettitEventInstanceAddress=" + currentBettingContractAddress + "&outcome=" + bet;
-        let replyMsg = `Please go to <a href="${url}">${url}</a> and authorize the bet in MetaMask.`;
+        let replyMsg = `Please go to [${url}](${url}) and authorize the bet in MetaMask.`;
         console.log({replyMsg });
 
         let result = submission.reply(replyMsg).then(
