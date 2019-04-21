@@ -3,20 +3,20 @@ function getCurrentRedditCommentName() {
   return urlParams.get("currentCommentName");
 }
 
-function postAddressMessageToReddit (address) {
+function postAddressMessageToReddit(address) {
   const client = new snoowrap({
     userAgent: "bettit",
     clientId: "jhJJvbKbFI6rEg",
     clientSecret: "kHJZeIKWbNn1VGWOADX89rhOErU",
     username: "IllVouchForYou",
-    password:"123aoeu"
+    password: "123aoeu"
   });
 
   const currentRedditCommentName = getCurrentRedditCommentName();
-  console.log('currentRedditCommentName: ', currentRedditCommentName);
+  console.log("currentRedditCommentName: ", currentRedditCommentName);
   let submission = client.getComment(currentRedditCommentName);
   let replyMsg = "Betting Contract Address: " + address;
-  let result = submission.reply(replyMsg).then((result) => console.log(result));
+  let result = submission.reply(replyMsg).then(result => console.log(result));
 }
 
 function createBettingEvent() {
@@ -64,7 +64,7 @@ function createBettingEvent() {
           ];
 
           let bettitInstanceAddress =
-            "0x29972532a8cec0ae770b90ea33417fefc0c9d0bd";
+            "0xc4f186cd62d33e735d374098b76d2e9574712729";
 
           const eth = new Eth(web3.currentProvider);
           const contract = new EthContract(eth);
@@ -83,14 +83,17 @@ function createBettingEvent() {
           let event = bettit.newBettitEventContract();
           event.new({ toBlock: "latest" }).then((err, result) => {
             event.watch((err, result) => {
-              let newBettitEventContractAddress = result[0].data.contractAddress;
+              let newBettitEventContractAddress =
+                result[0].data.contractAddress;
               postAddressMessageToReddit(newBettitEventContractAddress);
 
               if (error) {
                 console.log({ filter_watch_error: err });
               }
 
-              document.getElementById("event_address").innerHTML = newBettitEventContractAddress;
+              document.getElementById(
+                "event_address"
+              ).innerHTML = newBettitEventContractAddress;
 
               event.uninstall().then(result => {
                 console.log({ filter_uninstall_result: result });
