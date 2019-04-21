@@ -42,14 +42,14 @@ function createBettingEvent() {
             }
           ];
 
-          let bettitInstanceAddres =
+          let bettitInstanceAddress =
             "0x29972532a8cec0ae770b90ea33417fefc0c9d0bd";
 
           const eth = new Eth(web3.currentProvider);
           const contract = new EthContract(eth);
 
           const Bettit = contract(bettitAbi);
-          const bettit = Bettit.at(bettitInstanceAddres);
+          const bettit = Bettit.at(bettitInstanceAddress);
 
           bettit
             .createEvent(1587429735, "A", "B", { from: accounts[0] })
