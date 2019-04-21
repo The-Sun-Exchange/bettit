@@ -15,10 +15,7 @@ class BettitBot{
   private currentCommentName:string;
   private accountToUse = 0;
 
-
   public async start() {
-
-
 
     const client = new Snoowrap({
       userAgent: "bettit",
@@ -27,8 +24,6 @@ class BettitBot{
       username: "IllVouchForYou",
       password:"123aoeu"
     });
-
-
 
     const letsBetComments = new CommentStream(client, { subreddit: "testingground4bots", limit: 10, pollTime: 5000 });
     letsBetComments.on("item", async (item ) => {
@@ -63,7 +58,7 @@ class BettitBot{
         let submission = client.getComment(this.currentCommentName);
 
         this.accountToUse++;
-        if (this.accountToUse> 2)this.accountToUse =0;
+        if (this.accountToUse > 2)this.accountToUse = 0;
 
         const url = "http://localhost:8000/bet?bettitEventInstanceAddress=" + this.currentBettingContractAddress + "&outcome=" + bet +"&account=" + this.accountToUse;
         let replyMsg = `Please go to [${url}](${url}) and authorize the bet in MetaMask.`;

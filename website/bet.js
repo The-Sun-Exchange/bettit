@@ -87,12 +87,14 @@ function bet() {
           const BettitEvent = contract(bettitEventAbi);
           const bettitEvent = BettitEvent.at(bettitEventInstanceAddress);
 
-          console.log("Using Account " + nextAccount);
+          console.log(
+            "Using Account " + nextAccount + " out of " + accounts.length
+          );
 
           bettitEvent
             .bet(outcome, {
               value: "1000000000000000",
-              from: accounts[nextAccount]
+              from: accounts[0]
             })
             .then(betResult => {
               document.getElementById("betting_result").innerHTML = betResult;

@@ -85,7 +85,7 @@ function score() {
           console.log("Using Account " + nextAccount);
 
           bettitEvent
-            .reportOutcome(outcome, { from: accounts[nextAccount] })
+            .reportOutcome(outcome, { from: accounts[0] })
             .then(betResult => {
               document.getElementById("score_result").innerHTML = betResult;
             });
