@@ -1,3 +1,5 @@
+let nextAccount = 0;
+
 function score() {
   let bettitEventInstanceAddres = urlParams.get("bettitEventInstanceAddres");
   let outcome = urlParams.get("outcome");
@@ -81,8 +83,13 @@ function score() {
           const BettitEvent = contract(bettitAbi);
           const bettitEvent = BettitEvent.at(bettitEventInstanceAddres);
 
+          nextAccount++;
+          if (nextAccount >= accounts.length) nextAccount = 0;
+
+          console.log("Using Account " + nextAccount);
+
           bettitEvent
-            .reportOutcome(outcome, { from: accounts[0] })
+            .reportOutcome(outcome, { from: accounts[nextAccount] })
             .then(betResult => {
               document.getElementById("score_result").innerHTML = betResult;
             });
