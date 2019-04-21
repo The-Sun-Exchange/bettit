@@ -43,20 +43,19 @@ class BettitBot{
           "Please go to http://localhost:8000?currentCommentName="
           + currentCommentName
           + " and press the create event button after which punters can place their bets here" ;
-        let result = submission.reply(replyMsg).then(
-          console.log );
+        let result = submission.reply(replyMsg).then(console.log);
       }
 
-      let bettingContracCreatedtIndex = lowercasebody.indexOf("Betting Contract Address: ");
+      let bettingContracCreatedtIndex = lowercasebody.indexOf("betting contract address: ");
       if (bettingContracCreatedtIndex >=0) {
         currentBettingContractAddress = lowercasebody.substr(bettingContracCreatedtIndex+26,42  );
         console.log({currentBettingContractAddress });
       }
 
-
-      let betIndex = lowercasebody.indexOf("Betting on: ");
+      let betIndex = lowercasebody.indexOf("betting on: ");
       if (betIndex >=0) {
         var bet = lowercasebody.substr(betIndex+ 12, 1  );
+        console.log('bet');
 
         let submission = client.getComment(currentCommentName);
 
@@ -64,12 +63,13 @@ class BettitBot{
           "Please go to http://localhost:8000/bet?bettitEventInstanceAddress="+ currentBettingContractAddress+" &outcome="
           + bet
           + " and press the bet button after which punters can place their bets here" ;
+        console.log({replyMsg });
+
         let result = submission.reply(replyMsg).then(
           console.log );
 
-        let scoreIndex = lowercasebody.indexOf("Won!") - 2 ;
-
-        if (betIndex >=0) {
+        let scoreIndex = lowercasebody.indexOf("won!") - 2 ;
+        if (scoreIndex >=0) {
           var outcome = lowercasebody.substr(scoreIndex,1);
 
           console.log({outcome});
