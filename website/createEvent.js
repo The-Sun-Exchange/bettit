@@ -64,7 +64,7 @@ function createBettingEvent() {
           ];
 
           let bettitInstanceAddress =
-            "0x077cec2bca715cfeeccaf702c620c00e86fb62de";
+            "0x1e15d2ae7a110f0b14e87ec92944da963d72f619";
 
           const eth = new Eth(web3.currentProvider);
           const contract = new EthContract(eth);
