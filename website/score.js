@@ -1,7 +1,7 @@
 function score() {
   const urlParams = new URLSearchParams(window.location.search);
-  let bettitEventInstanceAddres = urlParams.get("bettitEventInstanceAddres");
-  let outcome = urlParams.get("outcome");
+  let bettitEventInstanceAddress = urlParams.get("bettitEventInstanceAddress");
+  let outcome = urlParams.get("outcome").toUpperCase();
   let nextAccount = urlParams.get("account");
 
   if (typeof web3 === "undefined") {
@@ -81,7 +81,7 @@ function score() {
           const contract = new EthContract(eth);
 
           const BettitEvent = contract(bettitAbi);
-          const bettitEvent = BettitEvent.at(bettitEventInstanceAddres);
+          const bettitEvent = BettitEvent.at(bettitEventInstanceAddress);
 
           console.log("Using Account " + nextAccount);
 
