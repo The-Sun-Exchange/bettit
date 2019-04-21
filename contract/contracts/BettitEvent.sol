@@ -5,8 +5,8 @@ contract BettitEvent {
     uint256 _bettingClosingTime;
     string[] _allowedOutcomes;
 
-    uint256 _outcomePercentageThreshold = 80;
-    uint256 _minimumOutcomeReports = 10; // not used
+    uint256 _outcomePercentageThreshold = 60;
+    uint256 _minimumOutcomeReports = 3; // not used
 
     struct Bet {
         address payable senderAddress;
