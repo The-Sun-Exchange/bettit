@@ -1,3 +1,17 @@
+function postAddressMessageToReddit (address) {
+  const client = new Snoowrap({
+    userAgent: "bettit",
+    clientId: "jhJJvbKbFI6rEg",
+    clientSecret: "kHJZeIKWbNn1VGWOADX89rhOErU",
+    username: "IllVouchForYou",
+    password:"123aoeu"
+  });
+
+  let submission = client.getComment(submissionName);
+  let replyMsg = "Betting Contract Address: " + address;
+  let result = submission.reply(replyMsg).then((result) => console.log(result));
+}
+
 function createBettingEvent() {
   if (typeof web3 === "undefined") {
     document.getElementById("error").innerHTML = "MetaMask is not installed";
@@ -62,15 +76,14 @@ function createBettingEvent() {
           let event = bettit.newBettitEventContract();
           event.new({ toBlock: "latest" }).then((err, result) => {
             event.watch((err, result) => {
-              var newBettitEventContractAddress =
-                result[0].data.contractAddress;
+              let newBettitEventContractAddress = result[0].data.contractAddress;
+              postAddressMessageToReddit(newBettitEventContractAddress);
+
               if (error) {
                 console.log({ filter_watch_error: err });
               }
 
-              document.getElementById(
-                "event_address"
-              ).innerHTML = newBettitEventContractAddress;
+              document.getElementById("event_address").innerHTML = newBettitEventContractAddress;
 
               event.uninstall().then(result => {
                 console.log({ filter_uninstall_result: result });
@@ -80,6 +93,7 @@ function createBettingEvent() {
         } else {
           console.error(error);
         }
+
         return false;
       });
     }
