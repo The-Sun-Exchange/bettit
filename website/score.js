@@ -1,8 +1,7 @@
-let nextAccount = 0;
-
 function score() {
   let bettitEventInstanceAddres = urlParams.get("bettitEventInstanceAddres");
   let outcome = urlParams.get("outcome");
+  let nextAccount = urlParams.get("account");
 
   if (typeof web3 === "undefined") {
     document.getElementById("error").innerHTML = "MetaMask is not installed";
@@ -82,9 +81,6 @@ function score() {
 
           const BettitEvent = contract(bettitAbi);
           const bettitEvent = BettitEvent.at(bettitEventInstanceAddres);
-
-          nextAccount++;
-          if (nextAccount >= accounts.length) nextAccount = 0;
 
           console.log("Using Account " + nextAccount);
 

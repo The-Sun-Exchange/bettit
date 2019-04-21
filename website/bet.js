@@ -4,6 +4,7 @@ function bet() {
   const urlParams = new URLSearchParams(window.location.search);
   let bettitEventInstanceAddress = urlParams.get("bettitEventInstanceAddress");
   let outcome = urlParams.get("outcome");
+  let nextAccount = urlParams.get("account");
   console.log({ bet: { bettitEventInstanceAddress, outcome } });
 
   console.log("BETTING");
@@ -85,9 +86,6 @@ function bet() {
 
           const BettitEvent = contract(bettitEventAbi);
           const bettitEvent = BettitEvent.at(bettitEventInstanceAddress);
-
-          nextAccount++;
-          if (nextAccount >= accounts.length) nextAccount = 0;
 
           console.log("Using Account " + nextAccount);
 
