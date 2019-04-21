@@ -1,3 +1,8 @@
+function getCurrentRedditCommentName() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("currentCommentName");
+}
+
 function postAddressMessageToReddit (address) {
   const client = new Snoowrap({
     userAgent: "bettit",
@@ -7,7 +12,8 @@ function postAddressMessageToReddit (address) {
     password:"123aoeu"
   });
 
-  let submission = client.getComment(submissionName);
+  const currentRedditCommentName = getCurrentRedditCommentName();
+  let submission = client.getComment(currentRedditCommentName);
   let replyMsg = "Betting Contract Address: " + address;
   let result = submission.reply(replyMsg).then((result) => console.log(result));
 }
