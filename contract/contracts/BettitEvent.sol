@@ -46,7 +46,7 @@ contract BettitEvent {
     }
 
     function bet(string memory outcome) payable public returns(bool) {
-        require (now < _bettingClosingTime, "This betting round has closed.");
+        // require (now < _bettingClosingTime, "This betting round has closed.");
         require (isAllowedOutcome(outcome), "Invalid outcome provided.");
         require (msg.value == _bettingAmount, "Invalid amount sent. Betting amount is 0.001");
 
@@ -130,7 +130,7 @@ contract BettitEvent {
     }
 
     function reportOutcome(string memory outcome) public returns(bool) {
-        require (now > _bettingClosingTime, "This betting round is still in progress.");
+        // require (now > _bettingClosingTime, "This betting round is still in progress.");
         require (isAllowedOutcome(outcome), "Invalid outcome provided.");
 
         if (bytes(_reportedOutcomes[msg.sender]).length == 0) {
