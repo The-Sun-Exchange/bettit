@@ -1,0 +1,4 @@
+
+> redbot@1.0.0 start /home/lourens/ethHack/reddit_wager_bot/redbot
+> node dist/app.js
+
