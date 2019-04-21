@@ -24,13 +24,13 @@ class BettitBot{
 
 
 
-    const letsBetComments = new CommentStream(client, { subreddit: "testingground4bots", limit: 10, pollTime: 2500 });
+    const letsBetComments = new CommentStream(client, { subreddit: "testingground4bots", limit: 10, pollTime: 5000 });
     letsBetComments.on("item", async (item ) => {
       console.log(item.body);
 
       let lowercasebody = item.body.toLowerCase();
 
-      let createBettingContractIndex = lowercasebody.indexOf("lets have a wager");
+      let createBettingContractIndex = item.body.indexOf("Wager");
       if (createBettingContractIndex >=0) {
         let submissionRawName = item.name;
 
@@ -54,7 +54,7 @@ class BettitBot{
 
       let betIndex = lowercasebody.indexOf("betting on: ");
       if (betIndex >=0) {
-        var bet = lowercasebody.substr(betIndex+ 12, 1  );
+        var bet = item.body.substr(betIndex+ 12, 1  );
         console.log('bet');
 
         let submission = client.getComment(currentCommentName);
