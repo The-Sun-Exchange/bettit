@@ -64,22 +64,19 @@ class BettitBot{
         let replyMsg = `Please go to [${url}](${url}) and authorize the bet in MetaMask.`;
         console.log({replyMsg });
 
-        let result = submission.reply(replyMsg).then(
-          console.log );
+        let result = submission.reply(replyMsg).then(console.log);
+      };
 
         let scoreIndex = lowercasebody.indexOf("won!") - 2 ;
         if (scoreIndex >=0) {
-          var outcome = lowercasebody.substr(scoreIndex,1);
+            var outcome = lowercasebody.substr(scoreIndex,1);
 
+            let submission = client.getComment(this.currentCommentName);
 
-          let submission = client.getComment(this.currentCommentName);
-
-          const url = "http://localhost:8000/score?bettitEventInstanceAddress=" + this.currentBettingContractAddress + "&outcome=" + bet+"&account=" + this.accountToUse;
-          let replyMsg = `Please go to [${url}](${url}) and authorize the result in MetaMask.`;
-          let result = submission.reply(replyMsg).then(
-            console.log );
+            const url = "http://localhost:8000/score?bettitEventInstanceAddress=" + this.currentBettingContractAddress + "&outcome=" + outcome + "&account=" + this.accountToUse;
+            let replyMsg = `Please go to [${url}](${url}) and authorize the result in MetaMask.`;
+            let result = submission.reply(replyMsg).then(console.log);
         }
-      };
     });
   };
 };

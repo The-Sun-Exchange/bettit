@@ -1,4 +1,5 @@
 function score() {
+  const urlParams = new URLSearchParams(window.location.search);
   let bettitEventInstanceAddres = urlParams.get("bettitEventInstanceAddres");
   let outcome = urlParams.get("outcome");
   let nextAccount = urlParams.get("account");
