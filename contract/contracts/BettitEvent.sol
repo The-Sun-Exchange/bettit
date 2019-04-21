@@ -80,13 +80,6 @@ contract BettitEvent {
         uint256 totalAmountBettedForOutcome1 = 0;
         uint256 totalAmountBettedForOutcome2 = 0;
         uint256 totalAmountBettedForOutcomeDraw = 0;
-        uint256 totalReportedForOutcome1 = 0;
-        uint256 totalReportedForOutcome2 = 0;
-        uint256 totalReportedForOutcomeDraw = 0;
-
-        totalReportedForOutcomeDraw++;
-        totalReportedForOutcome1++;
-        totalReportedForOutcome2++;
 
         for (uint256 i = 0; i < _bets.length; i++) {
             if (areStringsEqual(_bets[i].predictedOutcome, _allowedOutcomes[0])) {
@@ -106,11 +99,11 @@ contract BettitEvent {
         uint256 totalBettedForWinningOutcome = 0;
         string memory winningOutcome = '';
 
-        if ((totalReportedForOutcome1 > totalReportedForOutcome2) &&  (totalReportedForOutcome1 > totalReportedForOutcomeDraw)) {
+        if ((_reportedOutcome1Count > _reportedOutcome2Count) &&  (_reportedOutcome1Count > _reportedOutcomeDrawCount)) {
             totalBettedForWinningOutcome = totalAmountBettedForOutcome1;
             winningOutcome = _allowedOutcomes[1];
         }
-        else if ((totalReportedForOutcome2 > totalReportedForOutcome1) &&  (totalReportedForOutcome2 > totalReportedForOutcomeDraw)) {
+        else if ((_reportedOutcome2Count > _reportedOutcome1Count) &&  (_reportedOutcome2Count > _reportedOutcomeDrawCount)) {
             totalBettedForWinningOutcome = totalAmountBettedForOutcome2;
             winningOutcome = _allowedOutcomes[2];
         }
